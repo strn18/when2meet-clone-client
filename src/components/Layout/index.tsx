@@ -25,12 +25,11 @@ export function Layout({ children }: LayoutProps) {
           '@media (max-width: 600px)': {
             maxWidth: '100vw',
           },
+          backgroundColor: 'black',
         }}
       >
         <TopNav />
-        <Box height="80%" sx={{ backgroundColor: 'ivory' }}>
-          {children}
-        </Box>
+        <Box sx={{ backgroundColor: 'ivory' }}>{children}</Box>
         <Footer />
       </Box>
     </Box>
