@@ -1,9 +1,11 @@
 import { ChangeEvent, useState } from 'react';
+import axios from 'axios';
 import { Box, Typography } from '@mui/material';
 
 export function MainPage() {
   const [eventName, setEventName] = useState<string>();
   const [date, setDate] = useState<string>();
+  const [dates, setDates] = useState<Date[]>([]);
   const [beginTime, setBeginTime] = useState<number>();
   const [endTime, setEndTime] = useState<number>();
 
@@ -15,6 +17,10 @@ export function MainPage() {
     setDate(event.target.value);
   };
 
+  const handleDates = () => {
+    if (date) setDates([...dates, new Date(date)]);
+  };
+
   const handleBeginTime = (event: ChangeEvent<HTMLSelectElement>) => {
     setBeginTime(parseInt(event.target.value, 10));
   };
@@ -23,16 +29,22 @@ export function MainPage() {
     setEndTime(parseInt(event.target.value, 10));
   };
 
-  /**
-   * user 상태(state)를 선언했습니다.
-   * 이 state는 User 타입이며, 초기값은 아래와 같습니다.
-   */
-  // const [user, setUser] = useState<User>({
-  //   id: 0,
-  //   firstName: '이웹',
-  //   lastName: '케',
-  //   age: 21,
-  // });
+  async function createEvent() {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/event`, {
+        dates,
+        begin: beginTime,
+        end: endTime,
+        eventName,
+      });
+
+      if (response.status !== 201) throw new Error();
+
+      alert('GOOD');
+    } catch (error) {
+      console.error('Fail to create event');
+    }
+  }
 
   /**
    * 백엔드 서버에 요청을 보내서 유저 정보를 가져오는 함수입니다.
@@ -97,7 +109,7 @@ export function MainPage() {
           style={{ textAlign: 'center', fontSize: '22px' }}
         />
       </Box>
-      <Box display={'flex'} justifyContent={'space-around'}>
+      <Box display={'flex'}>
         <Box
           display={'flex'}
           flexDirection={'column'}
@@ -110,6 +122,10 @@ export function MainPage() {
             <Typography variant="body2">Scroll labels to shift the calendar.</Typography>
           </Box>
           <input type="date" onChange={handleDate} />
+          <button onClick={handleDates}>Push</button>
+          {dates.map((date1) => (
+            <p>{date1.toLocaleString()}</p>
+          ))}
         </Box>
         <Box
           display={'flex'}
@@ -118,46 +134,31 @@ export function MainPage() {
           sx={{ width: '50%', backgroundColor: 'pink' }}
         >
           <Typography variant="body1">What times might work?</Typography>
-          <Box marginY={0.5}>
-            <Typography variant="body2" display={'inline'}>
-              {'No earlier than: '}
-            </Typography>
-            <select value={beginTime} onChange={handleBeginTime}>
-              {[0, 1, 2].map((n) => (
-                <option value={n}>{`${n}:00 AM`}</option>
-              ))}
-            </select>
+          <Box display={'flex'} flexDirection={'column'} alignItems={'center'} marginY={4}>
+            <Box marginY={0.5}>
+              <Typography variant="body2" display={'inline'}>
+                {'No earlier than: '}
+              </Typography>
+              <select value={beginTime} onChange={handleBeginTime}>
+                {[0, 1, 2].map((n) => (
+                  <option value={n}>{`${n}:00 AM`}</option>
+                ))}
+              </select>
+            </Box>
+            <Box marginY={0.5}>
+              <Typography variant="body2" display={'inline'}>
+                {'No later than: '}
+              </Typography>
+              <select value={endTime} onChange={handleEndTime}>
+                {[0, 1, 2].map((n) => (
+                  <option value={n}>{`${n}:00 AM`}</option>
+                ))}
+              </select>
+            </Box>
           </Box>
-          <Box marginY={0.5}>
-            <Typography variant="body2" display={'inline'}>
-              {'No later than: '}
-            </Typography>
-            <select value={endTime} onChange={handleEndTime}>
-              {[0, 1, 2].map((n) => (
-                <option value={n}>{`${n}:00 AM`}</option>
-              ))}
-            </select>
-          </Box>
-          <button
-            onClick={() => {
-              alert(`이벤트 이름: ${eventName}\n선택한 시간: ${date}\n시작 시간: ${beginTime}\n종료 시간: ${endTime}`);
-            }}
-          >
-            Create Event
-          </button>
+          <button onClick={createEvent}>Create Event</button>
         </Box>
       </Box>
     </Box>
-    // <Box paddingX={3} paddingY={5}>
-    //   <Box>
-    //     <Typography variant="h4">사용자 정보</Typography>
-    //   </Box>
-    //   <Box height={40} />
-    //   <Box>
-    //     <Typography variant="h6">이름: {user.firstName}</Typography>
-    //     <Typography variant="h6">성: {user.lastName}</Typography>
-    //     <Typography variant="h6">나이: {user.age}</Typography>
-    //   </Box>
-    // </Box>
   );
 }
