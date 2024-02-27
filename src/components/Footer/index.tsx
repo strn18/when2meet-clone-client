@@ -10,7 +10,7 @@ export default function Footer() {
   };
 
   return (
-    <Box display={'flex'} padding={1} sx={{ width: '100%', backgroundColor: 'black' }}>
+    <Box display={'flex'} justifyContent={'space-between'} padding={1} sx={{ width: '100%', backgroundColor: 'black' }}>
       <Box display={'flex'} flexDirection={'column'} gap={0.5}>
         <Typography color={'white'} fontSize={12}>
           Like When2meet?
@@ -24,13 +24,14 @@ export default function Footer() {
         </select>
         <button onClick={() => alert(`You donated ${USD} dollars!`)}>Donate</button>
       </Box>
-      <Box marginLeft={25} display={'flex'} flexDirection={'column'} alignItems={'center'}>
+      <Box display={'flex'} flexDirection={'column'} alignItems={'center'}>
         <Typography color={'white'} fontSize={12}>
           When2meet is a free service. We do not ask for contact or billing information. The below is a third-party
           advertisement.
         </Typography>
         <Box component={'img'} src="/ad.png"></Box>
       </Box>
+      <Box width={'116.8px'}></Box>
     </Box>
   );
 }
