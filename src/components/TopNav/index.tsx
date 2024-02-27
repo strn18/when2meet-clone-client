@@ -8,7 +8,7 @@ export default function TopNav() {
   const [curPage, setCurPage] = useState(0); // 0: MainPage, 1: AboutPage
 
   return (
-    <Box display={'flex'} paddingX={1} sx={{ width: '100%', height: '5%', backgroundColor: 'black' }}>
+    <Box display={'flex'} paddingX={1} sx={{ width: '100%', height: '32.4px', backgroundColor: 'black' }}>
       <Box
         sx={{ color: '#DEDEDE', ':hover': { backgroundColor: '#DEDEDE', color: 'black', cursor: 'pointer' } }}
         onClick={() => {
