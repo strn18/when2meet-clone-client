@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import { Box, Typography } from '@mui/material';
@@ -8,6 +9,8 @@ export function MainPage() {
   const [dates, setDates] = useState<Date[]>([]);
   const [beginTime, setBeginTime] = useState<number>();
   const [endTime, setEndTime] = useState<number>();
+
+  const navigate = useNavigate();
 
   const handleEventName = (event: ChangeEvent<HTMLInputElement>) => {
     setEventName(event.target.value);
@@ -40,7 +43,7 @@ export function MainPage() {
 
       if (response.status !== 201) throw new Error();
 
-      alert('GOOD');
+      navigate(`/${response.data.url}`);
     } catch (error) {
       console.error('Fail to create event');
     }
@@ -157,6 +160,7 @@ export function MainPage() {
             </Box>
           </Box>
           <button onClick={createEvent}>Create Event</button>
+          <button onClick={() => navigate('/vote/YD5ZB')}>투표창으로 가는 버튼</button>
         </Box>
       </Box>
     </Box>
