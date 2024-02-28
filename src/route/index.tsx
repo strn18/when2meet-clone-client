@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 
+import { VotePage } from '../pages/Vote';
 import { RegisterPage } from '../pages/Register';
 import { MainPage } from '../pages/Main';
 import { ListPage } from '../pages/List';
@@ -14,6 +15,8 @@ export function RouteComponent() {
     <Routes>
       <Route path="/" element={<MainPage />} />
       <Route path="/about" element={<AboutPage />} />
+      <Route path="/vote/:url" element={<VotePage />} />
+
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/list/:age" element={<ListPage />} />
     </Routes>
